@@ -80,6 +80,7 @@
 
 package com.example.mychatapp.profile
 
+import ChatBottomBar
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.foundation.Image
@@ -97,9 +98,13 @@ import androidx.compose.ui.unit.dp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel) {
+fun ProfileScreen( viewModel: ProfileViewModel,
+                  navController : NavController
+) {
 
     LaunchedEffect(Unit) {
         viewModel.getCurrentUserData()
@@ -118,51 +123,69 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF1976D2))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Profile",
-            style = MaterialTheme.typography.titleLarge,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
 
-        Spacer(modifier = Modifier.height(24.dp))
 
-        if (base64Image != null) {
-            val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Profile Picture",
+    Scaffold(
+        topBar = {},
+
+        content = { padding ->
+            Column(
                 modifier = Modifier
-                    .size(120.dp)
-                    .clickable { imagePicker.launch("image/*") }
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .background(Color.Gray)
-                    .clickable { imagePicker.launch("image/*") },
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .background(Color(0xFF1976D2))
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Tap to add", color = Color.White)
+                Text(
+                    text = "Profile",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                if (base64Image != null) {
+                    val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                    val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clickable { imagePicker.launch("image/*") }
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .background(Color.Gray)
+                            .clickable { imagePicker.launch("image/*") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Tap to add", color = Color.White)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = userName,
+                    color = Color.White,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize
+                )
+
+
             }
+
+        },
+        bottomBar = {
+            ChatBottomBar(navController)
+
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+    )
 
-        Text(
-            text = userName,
-            color = Color.White,
-            fontWeight = FontWeight.Medium,
-            fontSize = MaterialTheme.typography.titleMedium.fontSize
-        )
-    }
+
 }

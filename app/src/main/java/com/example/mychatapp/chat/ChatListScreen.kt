@@ -1,5 +1,6 @@
 package com.example.mychatapp.chat
 
+import ChatBottomBar
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -76,8 +76,9 @@ fun ChatListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
                     .background(Color(0xFF2368D5))
+                    .padding(paddingValues)
+
 
             ) {
                 LazyColumn(
@@ -93,7 +94,7 @@ fun ChatListScreen(
             }
 
         },
-        bottomBar = {ChatListBottomBar(navController)}
+        bottomBar = {ChatBottomBar(navController)}
     )
 
 }
@@ -202,78 +203,3 @@ fun ChatListTopBar() {
     }
 }
 
-
-@Composable
-fun ChatListBottomBar(
-    navController: NavController,
-) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-            .background(Color(0xFF005CA1))
-            .padding(24.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-
-    ) {
-
-        IconButton(onClick = {
-            if (currentRoute != Routs.chatListScreen) {
-                navController.navigate(Routs.chatListScreen)
-            }
-        }) {
-
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "Send",
-                tint = Color.White,
-                modifier = Modifier.size(30.dp)
-
-            )
-//
-        }
-
-        Spacer(modifier = Modifier.width(80.dp))
-
-        IconButton(onClick = {
-            if(currentRoute != Routs.ProfileScreen){
-                navController.navigate(Routs.ProfileScreen)
-            }
-
-        }) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Send",
-                tint = Color.White,
-                modifier = Modifier.size(30.dp)
-
-            )
-        }
-
-        Spacer(modifier = Modifier.width(80.dp))
-
-        IconButton(onClick = {
-            if(currentRoute != Routs.SettingsScreen){
-                navController.navigate(Routs.SettingsScreen)
-            }
-        }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Send",
-                tint = Color.White,
-                modifier = Modifier.size(30.dp)
-
-            )
-        }
-    }
-}
-
-
-//@Composable
-//fun ArtistCardArrangement(artist: Artist) {
-//    Image(bitmap = artist.image, contentDescription = "Artist image")
-//
-//}

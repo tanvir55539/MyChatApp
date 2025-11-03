@@ -68,7 +68,7 @@ fun AppNavigation(navController: NavHostController,modifier: Modifier){
 
 
         composable(Routs.ProfileScreen) {
-            ProfileScreen(profileViewModel)
+            ProfileScreen(profileViewModel,navController)
         }
 
 

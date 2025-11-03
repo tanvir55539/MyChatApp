@@ -1,54 +1,93 @@
-//package com.example.mychatapp.navigation
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.mychatapp.navigation.Routs
+
+@Composable
+fun ChatBottomBar(
+    navController: NavController,
+) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .background(Color(0xFF005CA1))
+            .padding(24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+
+    ) {
+
+        IconButton(onClick = {
+            if (currentRoute != Routs.chatListScreen) {
+                navController.navigate(Routs.chatListScreen)
+            }
+        }) {
+
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = "Send",
+                tint = Color.White,
+                modifier = Modifier.size(30.dp)
+
+            )
 //
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.material3.*
-//import androidx.compose.runtime.*
-//import androidx.compose.runtime.saveable.rememberSaveable
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.res.painterResource
-//import androidx.navigation.NavHostController
-//import androidx.navigation.compose.rememberNavController
-//import com.example.mychatapp.R
-//
-////enum class Destination(val route: String, val icon: Int, val label: String) {
-////    Chats(Routs.chatListScreen, R.drawable.botombarchats, "Chats"),
-////    Profile(Routs.profileScreen, R.drawable.bottombarprofile, "Profile")
-////}
-//
-//@Composable
-//fun BottomNavigationApp() {
-//    val navController = rememberNavController()
-//    var selectedDestination by rememberSaveable { mutableStateOf(Routs.chatListScreen) }
-//
-//    Scaffold(
-//        bottomBar = {
-//            NavigationBar {
-//                Destination.values().forEach { destination ->
-//                    NavigationBarItem(
-//                        selected = selectedDestination == destination.route,
-//                        onClick = {
-//                            selectedDestination = destination.route
-//                            navController.navigate(destination.route) {
-//                                launchSingleTop = true
-//                                popUpTo(navController.graph.startDestinationRoute!!) { saveState = true }
-//                                restoreState = true
-//                            }
-//                        },
-//                        icon = {
-//                            Icon(
-//                                painter = painterResource(id = destination.icon),
-//                                contentDescription = destination.label
-//                            )
-//                        },
-//                        label = { Text(destination.label) }
-//                    )
-//                }
-//            }
-//        }
-//    ) { contentPadding ->
-//        AppNavigation(
-//            navController = navController,
-//            modifier = Modifier.padding(contentPadding)
-//        )
-//    }
-//}
+        }
+
+        Spacer(modifier = Modifier.width(80.dp))
+
+        IconButton(onClick = {
+            if(currentRoute != Routs.ProfileScreen){
+                navController.navigate(Routs.ProfileScreen)
+            }
+
+        }) {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Send",
+                tint = Color.White,
+                modifier = Modifier.size(30.dp)
+
+            )
+        }
+
+        Spacer(modifier = Modifier.width(80.dp))
+
+        IconButton(onClick = {
+            if(currentRoute != Routs.SettingsScreen){
+                navController.navigate(Routs.SettingsScreen)
+            }
+        }) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Send",
+                tint = Color.White,
+                modifier = Modifier.size(30.dp)
+
+            )
+        }
+    }
+}
+

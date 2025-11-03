@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
@@ -58,10 +59,20 @@ fun ChatScreen(
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     reverseLayout = true
                 ) {
-                    items(messages.reversed()) { msg ->
-                        MessageBubble(message = msg, isOwnMessage = msg.senderId == userId)
+                    itemsIndexed(messages.reversed()) { index, msg ->
+                        val messageList = messages.reversed()
+
+                        val nextMsgSender = messageList.getOrNull(index - 1)?.senderId
+                        val showAvatar = nextMsgSender != msg.senderId
+
+                        MessageBubble(
+                            message = msg,
+                            isOwnMessage = msg.senderId == userId,
+                            showAvatar = showAvatar
+                        )
                     }
                 }
+
 
                 // Message input area
                 MessageUi(
@@ -81,7 +92,7 @@ fun ChatScreen(
 
 
 @Composable
-fun MessageBubble(message: Message, isOwnMessage: Boolean) {
+fun MessageBubble(message: Message, isOwnMessage: Boolean, showAvatar: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -91,15 +102,17 @@ fun MessageBubble(message: Message, isOwnMessage: Boolean) {
     ) {
         // Show avatar for received messages on the left
         if (!isOwnMessage) {
-            Image(
-                painter = painterResource(R.drawable.profileimg),
-                contentDescription = "receiver image",
-                modifier = Modifier
-                    .size(24.dp)          // mini size
-                    .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
+            if (showAvatar) {
+                Image(
+                    painter = painterResource(R.drawable.profileimg),
+                    contentDescription = "receiver image",
+                    modifier = Modifier
+                        .size(24.dp)          // mini size
+                        .clip(CircleShape)
+                        .border(1.dp, Color.Gray, CircleShape)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
         }
 
         // Message bubble
