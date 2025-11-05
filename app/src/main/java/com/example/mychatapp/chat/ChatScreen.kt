@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -59,8 +58,9 @@ fun ChatScreen(
                         .padding(horizontal = 8.dp, vertical = 4.dp),
                     reverseLayout = true
                 ) {
-                    itemsIndexed(messages.reversed()) { index, msg ->
-                        val messageList = messages.reversed()
+                    val messageList = messages.reversed()
+
+                    itemsIndexed(messageList) { index, msg ->
 
                         val nextMsgSender = messageList.getOrNull(index - 1)?.senderId
                         val showAvatar = nextMsgSender != msg.senderId
@@ -133,7 +133,9 @@ fun MessageBubble(message: Message, isOwnMessage: Boolean, showAvatar: Boolean) 
 
         // Show avatar for sent messages on the right
         if (isOwnMessage) {
-            Spacer(modifier = Modifier.width(4.dp))
+            if(showAvatar)
+            {
+                Spacer(modifier = Modifier.width(4.dp))
             Image(
                 painter = painterResource(R.drawable.profileimg),
                 contentDescription = "sender image",
@@ -141,7 +143,8 @@ fun MessageBubble(message: Message, isOwnMessage: Boolean, showAvatar: Boolean) 
                     .size(24.dp)
                     .clip(CircleShape)
                     .border(1.dp, Color.Gray, CircleShape)
-            )
+             )
+           }
         }
     }
 }

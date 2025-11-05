@@ -23,6 +23,14 @@ class MessageViewModel : ViewModel(){
 //    private val _lastMessage = MutableStateFlow<Map<String, Message>>(emptyMap())
 //    val lastMessage : StateFlow<Map<String, Message>> = _lastMessage
 
+    private val _lastMessage = MutableStateFlow<Map<String, String>>(emptyMap())
+    val lastMessage: StateFlow<Map<String, String>> = _lastMessage
+
+
+//    private val _lastMessage = MutableStateFlow<String>("")
+//    val lastMessage : StateFlow<String> = _lastMessage
+
+
     private var listenerRegistration: ListenerRegistration? = null
 
     private fun generateChatId(user1: String, user2: String): String {
@@ -61,6 +69,7 @@ class MessageViewModel : ViewModel(){
         listenerRegistration?.remove()
 
         listenerRegistration = firestore.collection("chats")
+//            firestore.collection("chats")
             .document(chatId)
             .collection("messages")
             .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -76,7 +85,7 @@ class MessageViewModel : ViewModel(){
     }
 
 
-    fun getLastMessage(senderId: String, receiverId: String, onResult: (String) -> Unit){
+    fun getLastMessage(senderId: String, receiverId: String){
 
         val chatId = generateChatId(senderId,receiverId)
 
@@ -87,11 +96,23 @@ class MessageViewModel : ViewModel(){
             .limit(1)
             .get()
             .addOnSuccessListener { snapshot ->
-                val lastMessage = snapshot.documents.firstOrNull()?.getString("text")
-                onResult(lastMessage ?: "No message yet")
+                val lastMessage = snapshot.documents.firstOrNull()?.getString("text") ?: "No message yet"
+//                onResult(lastMessage ?: "No message yet")
+
+                viewModelScope.launch {
+                    _lastMessage.value = _lastMessage.value.toMutableMap().apply {
+                        this[receiverId] = lastMessage
+                    }
+                }
+
             }
-            .addOnFailureListener { e ->
-                onResult("No Message yet")
+            .addOnFailureListener {
+                viewModelScope.launch {
+                    _lastMessage.value = _lastMessage.value.toMutableMap().apply {
+                        this[receiverId] = "No message yet"
+                    }
+                }
+
             }
 
     }

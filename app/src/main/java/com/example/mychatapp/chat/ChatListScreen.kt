@@ -109,7 +109,9 @@ fun IndividualUser(user: User,
                    userListViewModel: UserListViewModel
 ) {
 
-    var lastMessage by remember { mutableStateOf("Loading...")}
+//    var lastMessage by remember { mutableStateOf("Loading...")}
+    val lastMessages by viewModel.lastMessage.collectAsState()
+    val lastMessage = lastMessages[user.uid] ?: "Loading..."
 
     val photoBitmap = remember(user.photoBase64) {
         userListViewModel.decodeBase64ToBitmap(user.photoBase64)
@@ -117,9 +119,7 @@ fun IndividualUser(user: User,
     }
 
     LaunchedEffect(user.uid) {
-        viewModel.getLastMessage(currentUserId, user.uid) { message ->
-            lastMessage = message
-        }
+        viewModel.getLastMessage(currentUserId, user.uid)
     }
 
 
