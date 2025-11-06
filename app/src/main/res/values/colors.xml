@@ -8,5 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="logoColor">#2A64C3</color>
+    <color name="profile">#4179CE</color>
+    <color name="abc">#1976D2</color>
+
+
 
 </resources>

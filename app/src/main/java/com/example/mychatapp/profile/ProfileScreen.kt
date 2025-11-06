@@ -1,82 +1,3 @@
-//package com.example.mychatapp.profile
-//
-//import android.util.Log
-//import androidx.activity.compose.rememberLauncherForActivityResult
-//import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-//import androidx.compose.foundation.Image
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.border
-//import androidx.compose.foundation.clickable
-//import androidx.compose.foundation.layout.Arrangement
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.Spacer
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.foundation.layout.height
-//import androidx.compose.foundation.layout.size
-//import androidx.compose.foundation.shape.CircleShape
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.collectAsState
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.draw.clip
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.res.colorResource
-//import androidx.compose.ui.res.painterResource
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-//import com.example.mychatapp.R
-//import androidx.compose.runtime.getValue
-//import com.example.mychatapp.auth.AuthViewModel
-//import com.example.mychatapp.data.model.userModel
-//import androidx.activity.result.ActivityResultLauncher
-//import androidx.compose.ui.platform.LocalContext
-//import coil.compose.AsyncImage
-//
-////import coil3.compose.rememberAsyncImagePainter
-//
-//@Composable
-//fun ProfileScreen(profileViewModel: ProfileViewModel
-//) {
-//    val name by profileViewModel.currentUserName.collectAsState()
-//    val base64Image by profileViewModel.profileImageBase64.collectAsState()
-//
-//    val pickMedia = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
-//        if (uri != null) {
-//            // Pass context because decoding needs it
-//            profileViewModel.uploadProfilePicture(LocalContext.current, uri)
-//        }
-//    }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFF2368D5)),
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        val imageModel = if (base64Image != null) {
-//            "data:image/jpeg;base64,$base64Image"
-//        } else {
-//            R.drawable.bottombarprofile
-//        }
-//
-//        AsyncImage(
-//            model = imageModel,
-//            contentDescription = "Profile Image",
-//            modifier = Modifier
-//                .size(200.dp)
-//                .clip(CircleShape)
-//                .border(3.dp, Color.White, CircleShape)
-//                .clickable {
-//                    pickMedia.launch(PickVisualMedia.ImageOnly)
-//                }
-//        )
-//
-//        Spacer(modifier = Modifier.height(8.dp))
-//        Text(text = name, color = Color.White, fontSize = 24.sp)
-//    }
-//}
 
 package com.example.mychatapp.profile
 
@@ -97,8 +18,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mychatapp.R
 
 
 @Composable
@@ -126,7 +55,9 @@ fun ProfileScreen( viewModel: ProfileViewModel,
 
 
     Scaffold(
-        topBar = {},
+        topBar = {
+            ProfileTopBar()
+        },
 
         content = { padding ->
             Column(
@@ -136,12 +67,12 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                     .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Profile",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
+//                Text(
+//                    text = "Profile",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    color = Color.White,
+//                    fontWeight = FontWeight.Bold
+//                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -151,31 +82,45 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                     Image(
                         bitmap = bitmap.asImageBitmap(),
                         contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(120.dp)
+                        modifier =  Modifier.size(200.dp)
+                            .clip(CircleShape)
+                            .border(3.dp, Color.White, CircleShape)
+                            .background(colorResource(id = R.color.logoColor), CircleShape)
                             .clickable { imagePicker.launch("image/*") }
                     )
                 } else {
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                            .background(Color.Gray)
-                            .clickable { imagePicker.launch("image/*") },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Tap to add", color = Color.White)
-                    }
+//                    Box(
+//                        modifier = Modifier
+//                            .size(200.dp)
+//                            .background(Color.Gray)
+//                            .clip(CircleShape)
+//                            .border(3.dp, Color.White, CircleShape)
+//                            .clickable { imagePicker.launch("image/*") },
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text("Tap to add", color = Color.White)
+//                    }
+
+                    Image(painter = painterResource(com.example.mychatapp.R.drawable.profileimg),
+                        contentDescription = "Image",
+                        modifier = Modifier.size(200.dp)
+                            .clip(CircleShape)
+                            .border(3.dp, Color.White, CircleShape)
+                            .background(colorResource(id = R.color.logoColor), CircleShape)
+                            .clickable { imagePicker.launch("image/*") }
+                    )
+                    Text(text = "Tap to add")
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = userName,
-                    color = Color.White,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize
-                )
-
+//                Text(
+//                    text = userName,
+//                    color = Color.White,
+//                    fontWeight = FontWeight.Medium,
+//                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+//                )
+                ProfileUi(userName)
 
             }
 
@@ -188,4 +133,65 @@ fun ProfileScreen( viewModel: ProfileViewModel,
     )
 
 
+}
+
+
+
+
+@Composable
+fun ProfileUi(userName: String){
+
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        modifier = Modifier
+            .size(width = 325.dp, height = 350.dp),
+
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.profile)
+        ),
+        shape = RoundedCornerShape(16.dp)
+
+
+
+    ) {
+
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = userName,
+                color = Color.White,
+                fontWeight = FontWeight.Medium,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+
+
+
+
+        }
+
+
+    }
+
+}
+
+
+@Composable
+fun ProfileTopBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF2368D5))
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Profile",
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            color = Color.White
+        )
+    }
 }
