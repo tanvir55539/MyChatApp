@@ -11,7 +11,7 @@ output.json
 *.aab
 
 # Firebase config
-google-services.json
+app/google-services.json
 firebase.json
 
 # Log files
