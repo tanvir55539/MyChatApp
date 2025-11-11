@@ -117,6 +117,17 @@ class MessageViewModel : ViewModel(){
 
     }
 
+    // creating the short form of the last message
+    fun shortLastMessage(message: String, maxMsgLength: Int = 10): String{
+
+        return if (message.length > maxMsgLength){
+           message.take(maxMsgLength)+"..."
+        }else{
+            message
+        }
+
+    }
+
 
 
     /**

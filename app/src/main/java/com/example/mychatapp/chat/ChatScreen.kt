@@ -1,5 +1,6 @@
 package com.example.mychatapp.chat
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,14 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.mychatapp.R
 import com.example.mychatapp.auth.AuthViewModel
 import com.example.mychatapp.data.model.Message
+import kotlin.math.log
+
 @Composable
 fun ChatScreen(
     userId: String,
@@ -30,7 +35,9 @@ fun ChatScreen(
     receiverId: String,
     receiverName: String,
     viewModel: MessageViewModel = viewModel(),
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    navController: NavController,
+    userListViewModel: UserListViewModel
 ) {
     var messageText by remember { mutableStateOf("") }
     val messages by viewModel.message.collectAsState()
@@ -68,7 +75,10 @@ fun ChatScreen(
                         MessageBubble(
                             message = msg,
                             isOwnMessage = msg.senderId == userId,
-                            showAvatar = showAvatar
+                            showAvatar = showAvatar,
+                            navController = navController,
+                            userListViewModel = userListViewModel
+
                         )
                     }
                 }
@@ -92,28 +102,56 @@ fun ChatScreen(
 
 
 @Composable
-fun MessageBubble(message: Message, isOwnMessage: Boolean, showAvatar: Boolean) {
+fun MessageBubble(
+    message: Message,
+    isOwnMessage: Boolean,
+    showAvatar: Boolean,
+    navController: NavController,
+    userListViewModel: UserListViewModel
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
+            .padding(horizontal = 8.dp, vertical = 8.dp), //4.dp
         horizontalArrangement = if (isOwnMessage) Arrangement.End else Arrangement.Start,
         verticalAlignment = Alignment.Bottom
     ) {
-        // Show avatar for received messages on the left
+
+        val userImageBase64 = navController.previousBackStackEntry
+            ?.savedStateHandle
+            ?.get<String>("anotherUser")
+
+        val bitmap = remember(userImageBase64) {
+            userListViewModel.decodeBase64ToBitmap(userImageBase64 ?: "")
+        }
+//        Log.d("ImageDebug", "Bitmap decoded successfully: $userImageBase64")
+// Show avatar for received messages on the left
+
         if (!isOwnMessage) {
             if (showAvatar) {
-                Image(
-                    painter = painterResource(R.drawable.profileimg),
-                    contentDescription = "receiver image",
-                    modifier = Modifier
-                        .size(24.dp)          // mini size
-                        .clip(CircleShape)
-                        .border(1.dp, Color.Gray, CircleShape)
-                )
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "user image",
+                        modifier = Modifier
+                            .size(30.dp)          // mini size
+                            .clip(CircleShape)
+                            .border(1.dp, Color.Gray, CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.profileimg),
+                        contentDescription = "sender image",
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.Gray, CircleShape)
+                    )
+                }
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
+
 
         // Message bubble
         Box(
@@ -130,22 +168,9 @@ fun MessageBubble(message: Message, isOwnMessage: Boolean, showAvatar: Boolean) 
                 fontSize = 16.sp
             )
         }
+        Spacer(modifier = Modifier.width(4.dp))
 
-        // Show avatar for sent messages on the right
-        if (isOwnMessage) {
-            if(showAvatar)
-            {
-                Spacer(modifier = Modifier.width(4.dp))
-            Image(
-                painter = painterResource(R.drawable.profileimg),
-                contentDescription = "sender image",
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape)
-             )
-           }
-        }
+
     }
 }
 

@@ -129,6 +129,7 @@ fun IndividualUser(user: User,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
+                    navController.currentBackStackEntry?.savedStateHandle?.set("anotherUser", user.photoBase64) // anotherUser is just a key name and the value is photoBitmap
                     navController.navigate("${Routs.MessageScreen}/${user.uid}/${Uri.encode(user.name)}")
 //                    Log.d("ChatDebugOK", "Navigating to chat with receiverId=$user.uid, receiverName=$user.name")
 
@@ -162,7 +163,9 @@ fun IndividualUser(user: User,
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Column {
+            Column (
+                modifier = Modifier.weight(1f)
+            ){
 
                 Text(
                     text = user.name,
@@ -172,7 +175,7 @@ fun IndividualUser(user: User,
                 )
 
                 Text(
-                    text = lastMessage,
+                    text = viewModel.shortLastMessage(lastMessage),
 //                    text = viewModel.message,
                     modifier = Modifier,
                     fontWeight = FontWeight.W200,

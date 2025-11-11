@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -19,8 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -67,12 +68,6 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                     .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-//                Text(
-//                    text = "Profile",
-//                    style = MaterialTheme.typography.titleLarge,
-//                    color = Color.White,
-//                    fontWeight = FontWeight.Bold
-//                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -89,17 +84,6 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                             .clickable { imagePicker.launch("image/*") }
                     )
                 } else {
-//                    Box(
-//                        modifier = Modifier
-//                            .size(200.dp)
-//                            .background(Color.Gray)
-//                            .clip(CircleShape)
-//                            .border(3.dp, Color.White, CircleShape)
-//                            .clickable { imagePicker.launch("image/*") },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text("Tap to add", color = Color.White)
-//                    }
 
                     Image(painter = painterResource(com.example.mychatapp.R.drawable.profileimg),
                         contentDescription = "Image",
@@ -114,13 +98,11 @@ fun ProfileScreen( viewModel: ProfileViewModel,
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-//                Text(
-//                    text = userName,
-//                    color = Color.White,
-//                    fontWeight = FontWeight.Medium,
-//                    fontSize = MaterialTheme.typography.titleLarge.fontSize
-//                )
+
                 ProfileUi(userName)
+
+
+
 
             }
 
@@ -167,15 +149,176 @@ fun ProfileUi(userName: String){
                 fontSize = MaterialTheme.typography.titleLarge.fontSize
             )
 
+            Spacer(modifier = Modifier.height(32.dp))
+            AddFriends()
+            Spacer(modifier = Modifier.height(32.dp))
 
+            Settings()
+            Spacer(modifier = Modifier.height(32.dp))
+
+            EditName()
 
 
         }
+    }
+}
 
 
+
+
+
+@Composable
+fun AddFriends() {
+
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        ),
+        modifier = Modifier
+            .size(width = 300.dp, height = 56.dp)
+            .clickable{}
+        ,
+
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.profile)
+        ),
+        shape = RoundedCornerShape(16.dp)
+
+    ) {
+
+    Row(
+        modifier = Modifier.padding(8.dp)
+            .fillMaxWidth(),
+//        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+
+        Image(
+            painter = painterResource(R.drawable.addfriend),
+            contentDescription = "add friends",
+            modifier = Modifier
+                .size(35.dp)
+                .clip(CircleShape)
+                .border(1.dp, Color.Gray, CircleShape)
+        )
+
+        Spacer(modifier = Modifier.width(35.dp))
+
+        Text(
+            text = "Add Friends",
+            color = Color.White,
+            fontWeight = FontWeight.Medium,
+            fontSize = MaterialTheme.typography.titleLarge.fontSize
+        )
+
+    }
+}
+
+}
+
+
+@Composable
+fun Settings() {
+
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        ),
+        modifier = Modifier
+            .size(width = 300.dp, height = 56.dp)
+            .clickable{}
+        ,
+
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.profile)
+        ),
+        shape = RoundedCornerShape(16.dp),
+
+    ) {
+
+        Row(
+            modifier = Modifier.padding(8.dp)
+                .fillMaxWidth(),
+//        horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+
+
+            ) {
+
+            Image(
+                painter = painterResource(R.drawable.sett),
+                contentDescription = "add friends",
+                modifier = Modifier
+                    .size(35.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.Gray, CircleShape)
+            )
+
+            Spacer(modifier = Modifier.width(35.dp))
+
+            Text(
+                text = "Settings",
+                color = Color.White,
+                fontWeight = FontWeight.Medium,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+
+        }
     }
 
 }
+
+@Composable
+fun EditName() {
+
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        ),
+        modifier = Modifier
+            .size(width = 300.dp, height = 56.dp)
+            .clickable{},
+
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.profile)
+        ),
+        shape = RoundedCornerShape(16.dp)
+
+    ) {
+
+        Row(
+            modifier = Modifier.padding(8.dp)
+                .fillMaxWidth(),
+//        horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+
+            ) {
+
+            Image(
+                painter = painterResource(R.drawable.edit),
+                contentDescription = "add friends",
+                modifier = Modifier
+                    .size(35.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, Color.Gray, CircleShape)
+            )
+
+            Spacer(modifier = Modifier.width(35.dp))
+
+            Text(
+                text = "Edit Name",
+                color = Color.White,
+                fontWeight = FontWeight.Medium,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+
+        }
+    }
+
+}
+
+
 
 
 @Composable

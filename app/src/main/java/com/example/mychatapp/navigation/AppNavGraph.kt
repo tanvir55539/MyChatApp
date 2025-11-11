@@ -7,7 +7,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mychatapp.auth.AuthViewModel
 import com.example.mychatapp.auth.LoginScreen
@@ -53,7 +52,6 @@ fun AppNavigation(navController: NavHostController,modifier: Modifier){
         ) { backStackEntry ->
             val receiverId = backStackEntry.arguments?.getString("receiverId") ?: ""
             val receiverName = backStackEntry.arguments?.getString("receiverName") ?: ""
-//            val currentUserId = authViewModel.currentUser?.uid ?: ""
             val currentUserId = authViewModel.getCurrentUser()?.uid ?: ""
 
 
@@ -62,7 +60,10 @@ fun AppNavigation(navController: NavHostController,modifier: Modifier){
                 userName = authViewModel.getCurrentUser()?.displayName ?: "You",
                 receiverId = receiverId,
                 receiverName = receiverName,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                navController = navController,
+                userListViewModel = userViewModel
+
             )
         }
 
@@ -73,7 +74,7 @@ fun AppNavigation(navController: NavHostController,modifier: Modifier){
 
 
         composable(Routs.SettingsScreen) {
-            SettingsScreen()
+            SettingsScreen(navController)
 
         }
 
