@@ -1,3 +1,21 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
 /build
+/captures/
+output.json
+*.apk
+*.aab
 
+# Firebase config
 google-services.json
+firebase.json
+
+# Log files
+*.log
+
+# Kotlin build
+/build/
