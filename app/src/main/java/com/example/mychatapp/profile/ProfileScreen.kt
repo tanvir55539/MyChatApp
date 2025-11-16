@@ -23,12 +23,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mychatapp.R
+import com.example.mychatapp.navigation.Routs
 
 
 @Composable
@@ -64,7 +66,16 @@ fun ProfileScreen( viewModel: ProfileViewModel,
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFF1976D2))
+                    .background(Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF25294F), // your color
+                            Color(0xFF3A2F63),
+                            Color(0xFF533C78),
+                            Color(0xFF7C54AA),
+                            Color(0xFF633B93)
+
+                        )
+                    ))
                     .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -80,7 +91,7 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                         modifier =  Modifier.size(200.dp)
                             .clip(CircleShape)
                             .border(3.dp, Color.White, CircleShape)
-                            .background(colorResource(id = R.color.logoColor), CircleShape)
+//                            .background(colorResource(id = R.color.logoColor), CircleShape)
                             .clickable { imagePicker.launch("image/*") }
                     )
                 } else {
@@ -90,7 +101,7 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                         modifier = Modifier.size(200.dp)
                             .clip(CircleShape)
                             .border(3.dp, Color.White, CircleShape)
-                            .background(colorResource(id = R.color.logoColor), CircleShape)
+//                            .background(colorResource(id = R.color.logoColor), CircleShape)
                             .clickable { imagePicker.launch("image/*") }
                     )
                     Text(text = "Tap to add")
@@ -99,7 +110,7 @@ fun ProfileScreen( viewModel: ProfileViewModel,
                 Spacer(modifier = Modifier.height(16.dp))
 
 
-                ProfileUi(userName)
+                ProfileUi(userName,navController)
 
 
 
@@ -121,7 +132,7 @@ fun ProfileScreen( viewModel: ProfileViewModel,
 
 
 @Composable
-fun ProfileUi(userName: String){
+fun ProfileUi(userName: String,navController: NavController){
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -131,7 +142,7 @@ fun ProfileUi(userName: String){
             .size(width = 325.dp, height = 350.dp),
 
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.profile)
+            containerColor = Color(0xFF533C78)
         ),
         shape = RoundedCornerShape(16.dp)
 
@@ -153,7 +164,7 @@ fun ProfileUi(userName: String){
             AddFriends()
             Spacer(modifier = Modifier.height(32.dp))
 
-            Settings()
+            Settings(navController)
             Spacer(modifier = Modifier.height(32.dp))
 
             EditName()
@@ -176,11 +187,14 @@ fun AddFriends() {
         ),
         modifier = Modifier
             .size(width = 300.dp, height = 56.dp)
-            .clickable{}
+
+            .clickable{
+
+            }
         ,
 
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.profile)
+            containerColor = Color(0xFF633B93)
         ),
         shape = RoundedCornerShape(16.dp)
 
@@ -219,7 +233,7 @@ fun AddFriends() {
 
 
 @Composable
-fun Settings() {
+fun Settings(navController: NavController) {
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -227,11 +241,13 @@ fun Settings() {
         ),
         modifier = Modifier
             .size(width = 300.dp, height = 56.dp)
-            .clickable{}
-        ,
+
+            .clickable{
+               navController.navigate(Routs.SettingsScreen)
+            },
 
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.profile)
+            containerColor = Color(0xFF633B93)
         ),
         shape = RoundedCornerShape(16.dp),
 
@@ -278,10 +294,11 @@ fun EditName() {
         ),
         modifier = Modifier
             .size(width = 300.dp, height = 56.dp)
+
             .clickable{},
 
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.profile)
+            containerColor = Color(0xFF633B93)
         ),
         shape = RoundedCornerShape(16.dp)
 
@@ -290,7 +307,6 @@ fun EditName() {
         Row(
             modifier = Modifier.padding(8.dp)
                 .fillMaxWidth(),
-//        horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
 
             ) {
@@ -338,3 +354,4 @@ fun ProfileTopBar() {
         )
     }
 }
+

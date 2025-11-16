@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
 
 //        enableEdgeToEdge()
         setContent {
+
             MyChatAppTheme {
                 val navController = rememberNavController()
                 val viewModel: AuthViewModel = viewModel()

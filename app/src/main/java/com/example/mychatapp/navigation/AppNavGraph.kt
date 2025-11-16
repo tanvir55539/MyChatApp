@@ -74,7 +74,7 @@ fun AppNavigation(navController: NavHostController,modifier: Modifier){
 
 
         composable(Routs.SettingsScreen) {
-            SettingsScreen(navController)
+            SettingsScreen(navController,authViewModel)
 
         }
 

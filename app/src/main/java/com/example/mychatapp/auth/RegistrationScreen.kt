@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -61,7 +63,7 @@ fun RegistrationScreen(
     val authState by viewModel.authSate.collectAsState()
 
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFF0D47A1)).padding(16.dp),
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally)
         {
@@ -85,7 +87,9 @@ fun RegistrationScreen(
                 value = name,
                 onValueChange = {name = it},
                 label = {Text(text = "Full Name")},
-                singleLine = true
+                singleLine = true,
+                shape = RoundedCornerShape(18.dp)
+
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -93,7 +97,9 @@ fun RegistrationScreen(
                 value =email,
                 onValueChange = {email = it},
                 label = {Text(text = "Email")},
-                singleLine = true
+                singleLine = true,
+                shape = RoundedCornerShape(18.dp)
+
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -101,7 +107,9 @@ fun RegistrationScreen(
                 value = pass,
                 onValueChange = {pass = it},
                 label = {Text(text = "Password")},
-                singleLine = true
+                singleLine = true,
+                shape = RoundedCornerShape(18.dp)
+
 
             )
 
