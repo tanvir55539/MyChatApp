@@ -19,7 +19,7 @@ MyChatApp is an Android chat application built using **Kotlin** and **Jetpack Co
 ## Screens
 
 1. **Login / Registration Screen** – User authentication flow.
-2. <img width="450" height="850" alt="image" src="https://github.com/user-attachments/assets/17834931-b6b1-4574-831b-91ccb9c3c387"  width="120" />
+2. <img width="200" height="400" alt="image" src="https://github.com/user-attachments/assets/17834931-b6b1-4574-831b-91ccb9c3c387"  width="100" />
   
 3. **Chat List Screen** – Displays all available users and last messages.  
 4. **Chat Screen** – Individual chat between two users with message input.  
